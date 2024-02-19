@@ -1,6 +1,8 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
+import plotly.graph_objects as go
+
 
 assets              = pd.read_csv("data/assets.csv")
 company_activities  = pd.read_csv("data/company_activities.csv")
@@ -28,9 +30,28 @@ fig = px.line(merged_data, x='year', y=f'{variable}_mean', color='ald_business_u
               labels={'year': 'Year', f'{variable}_mean': variable, 'ald_business_unit': 'Business Unit'},
               line_shape='linear')  # Specify 'linear' line shape for connected lines
 
-# Add filled areas for error bars
-fig.add_trace(px.area(merged_data, x='year', y0=f'{variable}_mean-{variable}_std',
-                      y1=f'{variable}_mean+{variable}_std', color='ald_business_unit').data[0])
+# Add filled areas for error bars using go.Figure
+for unit in merged_data['ald_business_unit'].unique():
+    subset = merged_data[merged_data['ald_business_unit'] == unit]
+    fig.add_trace(go.Scatter(
+        x=subset['year'],
+        y=subset[f'{variable}_mean'],
+        mode='lines',
+        line=dict(width=0),
+        stackgroup='one',
+        name=unit,
+        hoverinfo='skip'
+    ))
+    fig.add_trace(go.Scatter(
+        x=pd.concat([subset['year'], subset['year'][::-1]]),
+        y=pd.concat([subset[f'{variable}_mean'] - subset[f'{variable}_std'],
+                     (subset[f'{variable}_mean'] + subset[f'{variable}_std']).iloc[::-1]]),
+        fill='toself',
+        fillcolor='rgba(0,100,80,0.2)',
+        line=dict(color='rgba(255,255,255,0)'),
+        showlegend=False,
+        hoverinfo='skip'
+    ))
 
 # Display the plot in Streamlit
 st.plotly_chart(fig)
