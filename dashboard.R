@@ -1,12 +1,38 @@
-library(shiny)
+library(tidyverse)
 
-# Define UI
-ui <- fluidPage(
-  tags$div(class="h1", "Hello World")
-)
+assets             = read.csv("C:/Users/maxim.oweyssi/OneDrive - Energy Saving Trust/Documents/1in1000 Data Scientist Technical Test 2024/data/assets.csv")
+company_activities = read.csv("C:/Users/maxim.oweyssi/OneDrive - Energy Saving Trust/Documents/1in1000 Data Scientist Technical Test 2024/data/company_activities.csv")
+company_emissions  = read.csv("C:/Users/maxim.oweyssi/OneDrive - Energy Saving Trust/Documents/1in1000 Data Scientist Technical Test 2024/data/company_emissions.csv")
+portfolio          = read.csv("C:/Users/maxim.oweyssi/OneDrive - Energy Saving Trust/Documents/1in1000 Data Scientist Technical Test 2024/data/portfolio.csv")
+stress_test_output = read.csv("C:/Users/maxim.oweyssi/OneDrive - Energy Saving Trust/Documents/1in1000 Data Scientist Technical Test 2024/data/stress_test_output.csv")
 
-# Define server logic
-server <- function(input, output) { }
+business_units = unique(assets$ald_business_unit)
+assets_coal = assets %>% 
+  filter(ald_business_unit=="Coal") %>% 
+  pivot_wider(names_from = c(year,ald_business_unit), values_from = c(plan_tech_prod,plan_emission_factor))
 
-# Run the application
-shinyApp(ui = ui, server = server)
+
+power = assets %>% 
+  filter(ald_sector=="Power")
+coal = assets %>% 
+  filter(ald_sector=="Coal")%>% 
+  pivot_wider(names_from = c(year,ald_business_unit), values_from = c(plan_tech_prod,plan_emission_factor))
+
+power_hydro = power %>% 
+  filter(ald_business_unit=="HydroCap") %>% 
+  pivot_wider(names_from = c(year), values_from = c(plan_tech_prod,plan_emission_factor))
+power_nuclear = power %>% 
+  filter(ald_business_unit=="NuclearCap") %>% 
+  pivot_wider(names_from = c(year), values_from = c(plan_tech_prod,plan_emission_factor))
+power_gas = power %>% 
+  filter(ald_business_unit=="GasCap") %>% 
+  pivot_wider(names_from = c(year), values_from = c(plan_tech_prod,plan_emission_factor))
+power_oil = power %>% 
+  filter(ald_business_unit=="OilCap") %>% 
+  pivot_wider(names_from = c(year), values_from = c(plan_tech_prod,plan_emission_factor))
+power_coalcap = power %>% 
+  filter(ald_business_unit=="CoalCap") %>% 
+  pivot_wider(names_from = c(year), values_from = c(plan_tech_prod,plan_emission_factor))
+power_Renewables = power %>% 
+  filter(ald_business_unit=="RenewablesCap") %>% 
+  pivot_wider(names_from = c(year), values_from = c(plan_tech_prod,plan_emission_factor))
