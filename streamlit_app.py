@@ -23,9 +23,14 @@ std_data = df.groupby(['year', 'ald_business_unit'])[variable].std().reset_index
 merged_data = pd.merge(mean_data, std_data, on=['year', 'ald_business_unit'], suffixes=('_mean', '_std'))
 
 # Plot using Plotly Express
-fig = px.scatter(merged_data, x='year', y=f'{variable}_mean', color='ald_business_unit',
-                 error_y=f'{variable}_std', title=f'Mean Line and Error Bars for {variable}',
-                 labels={'year': 'Year', f'{variable}_mean': variable, 'ald_business_unit': 'Business Unit'})
+fig = px.line(merged_data, x='year', y=f'{variable}_mean', color='ald_business_unit',
+              title=f'Connected Lines and Areas for {variable}',
+              labels={'year': 'Year', f'{variable}_mean': variable, 'ald_business_unit': 'Business Unit'},
+              line_shape='linear')  # Specify 'linear' line shape for connected lines
+
+# Add filled areas for error bars
+fig.add_trace(px.area(merged_data, x='year', y0=f'{variable}_mean-{variable}_std',
+                      y1=f'{variable}_mean+{variable}_std', color='ald_business_unit').data[0])
 
 # Display the plot in Streamlit
 st.plotly_chart(fig)
