@@ -1,0 +1,13 @@
+name: 1in1000plotly
+title: 1in1000plotly
+username: moweyssi
+account: moweyssi
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 11286397
+bundleId: 8282428
+url: https://moweyssi.shinyapps.io/1in1000plotly/
+version: 1
+asMultiple: FALSE
+asStatic: FALSE
+ignoredFiles: .gitattributes|Analysis.ipynb|Archive/analyse_assets.R|Archive/requirements.txt|Archive/streamlit_app.py|Archive/Task2.R|dashboard.R|Task1.R|Task2.R|Technical test .docx

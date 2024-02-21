@@ -1,0 +1,13 @@
+name: 1in1000
+title: 1in1000
+username: moweyssi
+account: moweyssi
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 11279303
+bundleId: 8277195
+url: https://moweyssi.shinyapps.io/1in1000/
+version: 1
+asMultiple: FALSE
+asStatic: FALSE
+ignoredFiles: .gitattributes|Analysis.ipynb|Archive/analyse_assets.R|Archive/requirements.txt|Archive/streamlit_app.py|Archive/Task2.R|Task1.R|Technical test .docx
