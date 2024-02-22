@@ -54,8 +54,8 @@ generate_bar_plot_with_elements <- function(data, x_var, y_var, color_var, title
                     error_y = list(
                       type = 'data',
                       symmetric = FALSE,
-                      arrayminus = ~data$q1,
-                      array = ~data$q3,
+                      arrayminus = ~data$median_loss - data$q1,
+                      array = ~data$q3 - data$median_loss,
                       color = "black"
                     ),
                     text = ~paste('Count:', data$count),
